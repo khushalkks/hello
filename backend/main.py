@@ -1,14 +1,31 @@
 from fastapi import FastAPI
-from summarizer_app.routes import router
+from fastapi.middleware.cors import CORSMiddleware
+
+from summarizer_app.routes import router as summarize_router
+from chatbot.router import router as chatbot_router
 
 app = FastAPI(
-    title="Text Summarization API",
-    description="Minor Project – NLP Text Summarizer",
+    title="AI Notebook Backend",
+    description="Text Summarizer + Document Chatbot (DistilBART)",
     version="1.0"
 )
 
-app.include_router(router)
+# ✅ CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# ✅ Routers
+app.include_router(summarize_router)   # /summarize
+app.include_router(chatbot_router)     # /chat
 
 @app.get("/")
 def root():
-    return {"message": "Text Summarization API is running"}
+    return {
+        "message": "AI Notebook API running",
+        "endpoints": ["/summarize", "/chat"]
+    }
