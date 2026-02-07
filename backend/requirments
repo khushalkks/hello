@@ -1,3 +1,5 @@
+// sumarize
+
 fastapi
 uvicorn
 python-multipart
@@ -5,3 +7,15 @@ transformers
 torch
 pypdf
 python-docx
+
+
+// chatbot
+
+
+fastapi
+uvicorn
+transformers
+torch
+pydantic
+python-multipart
+
