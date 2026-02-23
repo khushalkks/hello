@@ -7,6 +7,7 @@ import SignUp from "./pages/SignUp";
 import Login from "./pages/Login";    
 import MindMap from "./pages/MindMap";
 import Quiz from "./pages/Quiz";
+import ChatbotPage from "./pages/ChatbotPage";
 
 const App = () => {
   return (
@@ -26,6 +27,7 @@ const App = () => {
           <Route path="/login" element={<Login/>} />
           <Route path="/mindmap" element={<MindMap />} />
           <Route path="/quiz" element={<Quiz />} />
+          <Route path="/chatbot" element={<ChatbotPage/>} />
         </Route>
 
       </Routes>
