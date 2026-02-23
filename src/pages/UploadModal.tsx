@@ -10,51 +10,47 @@ type UploadModalProps = {
 const UploadModal = ({ isOpen, onClose }: UploadModalProps) => {
   const [files, setFiles] = useState<File[]>([]);
   const [loading, setLoading] = useState(false);
+  const [summary, setSummary] = useState<string>("");
 
   if (!isOpen) return null;
 
   const handleFilesSelected = (newFiles: File[]) => {
-    setFiles((prev) => [...prev, ...newFiles]);
+    setFiles(newFiles); // 👈 ek hi file summarize kar rahe
+    setSummary("");
   };
 
- const handleSave = async () => {
-  if (files.length === 0) return;
+  const handleSave = async () => {
+    if (files.length === 0) return;
 
-  setLoading(true);
+    setLoading(true);
 
-  try {
-    for (const file of files) {
+    try {
       const formData = new FormData();
-      formData.append("file", file); // 👈 MUST be "file"
+      formData.append("file", files[0]); // 👈 backend expects "file"
 
-      const res = await fetch("http://127.0.0.1:8000/notebooks/upload", {
+      const res = await fetch("http://127.0.0.1:8000/summarize", {
         method: "POST",
         body: formData,
       });
 
       if (!res.ok) {
-  const text = await res.text();
-  console.error("Backend error:", text);
-  throw new Error(text);
-}
-
+        const text = await res.text();
+        console.error("Backend error:", text);
+        throw new Error(text);
+      }
 
       const data = await res.json();
-      console.log("Notebook created:", data);
 
-      // later: redirect to /notebook/:id
+      // 👇 backend must return { summary: "..." }
+      setSummary(data.summary);
+
+    } catch (err) {
+      console.error(err);
+      alert("Summarization failed");
+    } finally {
+      setLoading(false);
     }
-
-    setFiles([]);
-    onClose();
-  } catch (err) {
-    console.error(err);
-    alert("Upload failed");
-  } finally {
-    setLoading(false);
-  }
-};
-
+  };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
@@ -69,7 +65,7 @@ const UploadModal = ({ isOpen, onClose }: UploadModalProps) => {
         {/* Header */}
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100">
-            Add sources
+            Upload & Summarize
           </h2>
           <button onClick={onClose}>
             <X className="w-5 h-5 text-gray-500 hover:text-gray-700 dark:text-gray-400" />
@@ -77,13 +73,13 @@ const UploadModal = ({ isOpen, onClose }: UploadModalProps) => {
         </div>
 
         <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">
-          Upload documents so AI can base its answers on what matters to you.
+          Upload a document (PDF / TXT / DOCX) and get an AI-generated summary.
         </p>
 
-        {/* Upload Card */}
+        {/* Upload */}
         <FileUpload onFilesSelected={handleFilesSelected} />
 
-        {/* Footer */}
+        {/* Actions */}
         <div className="flex justify-end gap-3 mt-6">
           <button
             onClick={onClose}
@@ -103,9 +99,21 @@ const UploadModal = ({ isOpen, onClose }: UploadModalProps) => {
                   : "bg-purple-600 hover:bg-purple-700"
               }`}
           >
-            {loading ? "Uploading..." : "Add sources"}
+            {loading ? "Summarizing..." : "Generate Summary"}
           </button>
         </div>
+
+        {/* Summary Output */}
+        {summary && (
+          <div className="mt-6 p-4 rounded-lg bg-gray-100 dark:bg-gray-700">
+            <h3 className="font-semibold mb-2 text-gray-800 dark:text-gray-100">
+              Summary
+            </h3>
+            <p className="text-sm text-gray-700 dark:text-gray-200 whitespace-pre-wrap">
+              {summary}
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );
