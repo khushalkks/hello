@@ -1,3 +1,7 @@
+Hello giazz my name is khushal kumar sahu , 
+and i want to tell u gaizz that i am going to create 
+a new kingdome named khushal-Mention"
+
 # Summarizer App
 
 A full-stack web application for document summarization, featuring interactive notebooks, mind maps, quizzes, and chat functionality.
