@@ -10,6 +10,7 @@ import Quiz from "./pages/Quiz";
 import ChatbotPage from "./pages/ChatbotPage";
 import Dashboard from "./pages/dashboard";
 import SummaryPage from "./pages/SummaryPage";
+import InterviewPage from "./pages/InterviewPage";
 const App = () => {
   return (
     <BrowserRouter>
@@ -31,6 +32,7 @@ const App = () => {
           <Route path="/quiz" element={<Quiz />} />
           <Route path="/chatbot" element={<ChatbotPage/>} />
           <Route path="/summary" element={<SummaryPage />} />
+          <Route path="/interview" element={<InterviewPage />} />
         </Route>
 
       </Routes>

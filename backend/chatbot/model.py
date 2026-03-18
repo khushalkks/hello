@@ -6,7 +6,7 @@ MODEL_NAME = "google/flan-t5-small"
 tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
 model = AutoModelForSeq2SeqLM.from_pretrained(MODEL_NAME)
 
-def generate_answer(question: str) -> str:
+def generate_answer(question: str, max_output_length: int = 150) -> str:
     prompt = f"""
 Answer the following question clearly and briefly.
 
@@ -26,7 +26,7 @@ Answer:
     with torch.no_grad():
         outputs = model.generate(
             **inputs,
-            max_length=150,
+            max_length=max_output_length,
             do_sample=False
         )
 
