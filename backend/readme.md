@@ -16,4 +16,7 @@ ollama pull mistral
 
 Check installed models:
 
-ollama list
+ollama listkmjnm 
+
+
+Add the mindmap feature using ollma model
