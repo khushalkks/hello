@@ -1,13 +1,13 @@
-import Navbar from "../pages/Navbar";
-import { Outlet } from "react-router-dom";
+// // import Navbar from "../pages/Navbar";
+// import { Outlet } from "react-router-dom";
 
-const AppLayout = () => {
-  return (
-    <>
-      <Navbar />
-      <Outlet />
-    </>
-  );
-};
+// const AppLayout = () => {
+//   return (
+//     <>
+//       <Navbar />
+//       <Outlet />
+//     </>
+//   );
+// };
 
-export default AppLayout;
+// export default AppLayout;
